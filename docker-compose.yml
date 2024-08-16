@@ -63,40 +63,40 @@ services:
 
 
   # DB migrations from local files
-#  database-migrations:
-#    image: liquibase/liquibase
-#    volumes:
-#      - ./db/changelog:/liquibase/changelog
-#      - ./db/sql:/liquibase/sql
-#    command:
-#      - "--url=jdbc:postgresql://postgres:5432/${POSTGRESDB}"
-#      - "--username=${POSTGRESUSER}"
-#      - "--password=${POSTGRESPASSWORD}"
-#      - "--changeLogFile=changelog/db.changelog-main.yml"
-#      - "--liquibaseSchemaName=demoapi"
-#      - "update"
-#    depends_on:
-#      postgres:
-#        condition: service_healthy
-#    networks:
-#      - demoapi
-
-
-  # DB migrations from build container
   database-migrations:
-    image: sever3d/springboot-api-demo-database
-    pull_policy: always
+    image: liquibase/liquibase
+    volumes:
+      - ./db/changelog:/liquibase/changelog
+      - ./db/sql:/liquibase/sql
     command:
-      - "--url=jdbc:postgresql://${POSTGRESHOST}:${POSTGRESPORT}/${POSTGRESDB}"
+      - "--url=jdbc:postgresql://postgres:5432/${POSTGRESDB}"
       - "--username=${POSTGRESUSER}"
       - "--password=${POSTGRESPASSWORD}"
       - "--changeLogFile=changelog/db.changelog-main.yml"
       - "--liquibaseSchemaName=demoapi"
       - "update"
     depends_on:
-      - schema-creation
+      postgres:
+        condition: service_healthy
     networks:
       - demoapi
+
+
+#  # DB migrations from build container
+#  database-migrations:
+#    image: sever3d/springboot-api-demo-database
+#    pull_policy: always
+#    command:
+#      - "--url=jdbc:postgresql://${POSTGRESHOST}:${POSTGRESPORT}/${POSTGRESDB}"
+#      - "--username=${POSTGRESUSER}"
+#      - "--password=${POSTGRESPASSWORD}"
+#      - "--changeLogFile=changelog/db.changelog-main.yml"
+#      - "--liquibaseSchemaName=demoapi"
+#      - "update"
+#    depends_on:
+#      - schema-creation
+#    networks:
+#      - demoapi
 
 
 networks:
