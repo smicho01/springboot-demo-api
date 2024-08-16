@@ -1,5 +1,7 @@
 package com.example.apidemo.api.domain.person;
 
+import com.example.apidemo.api.domain.item.Item;
+import com.example.apidemo.api.domain.person.response.PersonItemsResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +44,20 @@ public class PersonController {
             return new ResponseEntity<>(person, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error: [GET] /api/person/{} ERROR: {}",id, e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/items/{id}")
+    public ResponseEntity<PersonItemsResponse> getOneWithItems(@PathVariable(name = "id") String id) {
+        try {
+            Person person = personService.findOneById(id);
+            List<Item> personItems = personService.getPersonItems(id);
+
+            log.info("Get person with items by id: {}", id);
+            return new ResponseEntity<>(new PersonItemsResponse(person, personItems), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error: [GET] /api/person/items/{} ERROR: {}",id, e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
