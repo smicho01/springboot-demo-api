@@ -62,9 +62,9 @@ services:
 
 
 
-#  # DB migrations from local files
+  # DB migrations from local files
 #  database-migrations:
-#    image: "liquibase/liquibase:4.15.0"
+#    image: liquibase/liquibase
 #    volumes:
 #      - ./db/changelog:/liquibase/changelog
 #      - ./db/sql:/liquibase/sql
