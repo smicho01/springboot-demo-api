@@ -79,9 +79,9 @@ spec:
                   name: {{ .Release.Name }}-secret
                   key: POSTGRESDB
           args:
-            - "--url=jdbc:postgresql://${POSTGRESHOST}:${POSTGRESPORT}/${POSTGRESDB}"
-            - "--username=${POSTGRESUSER}"
-            - "--password=${POSTGRESPASSWORD}"
+            - "--url=jdbc:postgresql://$(POSTGRESHOST):$(POSTGRESPORT)/$(POSTGRESDB)"
+            - "--username=$(POSTGRESUSER)"
+            - "--password=$(POSTGRESPASSWORD)"
             - "--changeLogFile=changelog/db.changelog-main.yml"
             - "--liquibaseSchemaName=demoapi"
             - "update"
