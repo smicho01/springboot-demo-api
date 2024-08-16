@@ -23,7 +23,7 @@ services:
       - demoapi
 
 
-  academi-item-service:
+  demoapi:
     image: sever3d/springboot-api-demo
     pull_policy: always
     ports:
@@ -62,25 +62,40 @@ services:
 
 
 
+#  database-migrations:
+#    image: "liquibase/liquibase:4.15.0"
+#    volumes:
+#      - ./db/changelog:/liquibase/changelog
+#      - ./db/sql:/liquibase/sql
+#    command:
+#      - "--url=jdbc:postgresql://postgres:5432/${POSTGRESDB}"
+#      - "--username=${POSTGRESUSER}"
+#      - "--password=${POSTGRESPASSWORD}"
+#      - "--changeLogFile=changelog/db.changelog-main.yml"
+#      - "--liquibaseSchemaName=demoapi"
+#      - "update"
+#    depends_on:
+#      postgres:
+#        condition: service_healthy
+#    networks:
+#      - demoapi
+
+
+
   database-migrations:
-    image: "liquibase/liquibase:4.15.0"
-    volumes:
-      - ./db/changelog:/liquibase/changelog
-      - ./db/sql:/liquibase/sql
+    image: sever3d/springboot-api-demo-database
+    pull_policy: always
     command:
-      - "--url=jdbc:postgresql://postgres:5432/${POSTGRESDB}"
+      - "--url=jdbc:postgresql://${POSTGRESHOST}:${POSTGRESPORT}/${POSTGRESDB}"
       - "--username=${POSTGRESUSER}"
       - "--password=${POSTGRESPASSWORD}"
       - "--changeLogFile=changelog/db.changelog-main.yml"
       - "--liquibaseSchemaName=demoapi"
       - "update"
     depends_on:
-      postgres:
-        condition: service_healthy
+      - schema-creation
     networks:
       - demoapi
-
-
 
 
 networks:
