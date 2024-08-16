@@ -51,5 +51,38 @@ spec:
             limits:
               memory: '512Mi'
               cpu: '1000m'
-
+      initContainers:
+        - name: database-migration
+          image: sever3d/springboot-api-demo-database:latest
+          imagePullPolicy: Always
+          env:
+            - name: POSTGRESHOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: POSTGRESHOST
+            - name: POSTGRESPORT
+              value: {{ .Values.env.POSTGRESPORT | quote }}
+            - name: POSTGRESUSER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: POSTGRESUSER
+            - name: POSTGRESPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: POSTGRESPASSWORD
+            - name: POSTGRESDB
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: POSTGRESDB
+          args:
+            - "--url=jdbc:postgresql://${POSTGRESHOST}:${POSTGRESPORT}/${POSTGRESDB}"
+            - "--username=${POSTGRESUSER}"
+            - "--password=${POSTGRESPASSWORD}"
+            - "--changeLogFile=changelog/db.changelog-main.yml"
+            - "--liquibaseSchemaName=demoapi"
+            - "update"
 
