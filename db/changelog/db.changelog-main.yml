@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: changelog/001-create-person-table.json
+  - include:
+      file: changelog/002-create-item-table.json

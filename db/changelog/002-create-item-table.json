@@ -1,0 +1,18 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "002-create-item-table",
+        "author": "S.M.",
+        "changes": [
+          {
+            "sqlFile": {
+              "dbms": "postgresql",
+              "path": "sql/002-create-item-table.sql"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
