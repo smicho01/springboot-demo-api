@@ -57,6 +57,18 @@ services:
         - demoapi
 
 
+  demoapi-ui:
+    image: sever3d/springboot-api-demo-ui
+    pull_policy: always
+    ports:
+      - "80:80"
+    environment:
+      - API_ITEM=http://demoapi:9091
+    depends_on:
+      - demoapi-items
+    networks:
+      - demoapi
+
 
   schema-creation:
     image: postgres:13.1
