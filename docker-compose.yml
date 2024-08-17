@@ -34,10 +34,27 @@ services:
       - POSTGRESUSER=${POSTGRESUSER}
       - POSTGRESPASSWORD=${POSTGRESPASSWORD}
       - POSTGRESDB=${POSTGRESDB}
+      - API_ITEM=${API_ITEM}
     depends_on:
       - database-migrations
     networks:
       - demoapi
+
+  demoapi-items:
+      image: sever3d/springboot-api-demo
+      pull_policy: always
+      ports:
+        - "9092:9091"
+      environment:
+        - POSTGRESHOST=${POSTGRESHOST}
+        - POSTGRESPORT=${POSTGRESPORT}
+        - POSTGRESUSER=${POSTGRESUSER}
+        - POSTGRESPASSWORD=${POSTGRESPASSWORD}
+        - POSTGRESDB=${POSTGRESDB}
+      depends_on:
+        - database-migrations
+      networks:
+        - demoapi
 
 
 
